@@ -121,7 +121,7 @@ json-sever --watch db.json
 "json-server": "json-server __json_server_mock__/db.json --watch"
 ```
 
-现在默认端口号 3000，为了不和 react-app 的端口，加上
+现在默认端口号 3000，为了不和 react-app 的端口冲突，先在 3001port 上
 
 ```
 "json-server": "json-server __json_server_mock__/db.json --watch --port 3001"
@@ -146,6 +146,12 @@ mock 注意事项：
 
 ```
 const apiUrl = process.env.REACT_APP_API_URL
+```
+
+使用 middleware
+
+```
+ "json-server": "json-server --watch __json_server_mock__/db.json --port 3001 --middlewares __json_server_mock__/middleware.js"
 ```
 
 ## 路径问题
