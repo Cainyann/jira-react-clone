@@ -4,6 +4,7 @@ import { loadDevTools } from "jira-dev-tool";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { AppProvider } from "./context/index";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -16,7 +17,9 @@ const root = ReactDOM.createRoot(
 loadDevTools(() => {
   root.render(
     <React.StrictMode>
-      <App />
+      <AppProvider>
+        <App />
+      </AppProvider>
     </React.StrictMode>
   );
 });
