@@ -1,8 +1,6 @@
 import React from "react";
 import { useAuth } from "../context/auth-context";
 
-const apiUrl = process.env.REACT_APP_API_URL;
-
 const LoginScreen = () => {
   const { user, login } = useAuth();
 

@@ -47,3 +47,5 @@ export const register = (data: { username: string; password: string }) => {
 
 export const logout = async () =>
   window.localStorage.removeItem(localStorageKey);
+
+// console.log(window.localStorage.getItem(localStorageKey));

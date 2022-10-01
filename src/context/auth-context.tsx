@@ -1,18 +1,32 @@
 import React, { ReactNode, useState } from "react";
 import * as auth from "../auth-provider-helper"; //login logout register等名字重了：import * as,用auth.login调用方法
-
+import { http } from "../utils/http";
 import { User } from "../screens/project-list/search-panel";
+import { useMount } from "utils/index";
+
 interface AuthForm {
   username: string;
   password: string;
 }
+
+//问题：页面刷新的时候state中的user消失导致projectListScreen又回到登陆页面
+//解决：刷新时初始化user
+const bootstrapUser = async () => {
+  let user = null;
+  const token = auth.getToken();
+  if (token) {
+    const data = await http("me", { token }); //meApi的返回值包含user信息
+    user = data.user;
+  }
+  return user;
+};
 
 const AuthContext = React.createContext<
   | {
       user: User | null;
       register: (form: AuthForm) => Promise<void>;
       login: (form: AuthForm) => Promise<void>;
-      logout: (form: AuthForm) => Promise<void>;
+      logout: () => Promise<void>;
     }
   | undefined
 >(undefined);
@@ -25,12 +39,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = (form: AuthForm) =>
     auth.login(form).then((user) => setUser(user));
   const register = (form: AuthForm) => auth.register(form).then(setUser); //point free
-  const logout = (form: AuthForm) => auth.logout().then(() => setUser(null));
+  const logout = () =>
+    auth.logout().then(() => {
+      setUser(null);
+    });
+
+  //初始化user
+  useMount(() => {
+    bootstrapUser().then((user) => setUser(user));
+  });
 
   return (
     <AuthContext.Provider
       children={children}
-      value={{ user, login, register, logout }}
+      value={{ user, logout, login, register }}
     />
   );
 };
