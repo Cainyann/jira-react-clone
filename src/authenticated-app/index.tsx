@@ -1,15 +1,14 @@
 import React from "react";
 import ProjectListScreen from "screens/project-list";
 import { useAuth } from "../context/auth-context";
+import { Button } from "antd";
 
 const AuthenticatedApp = () => {
   const { logout } = useAuth();
 
-  // window.localStorage.removeItem("__auth_provider_token__")
-
   return (
     <div>
-      <button onClick={logout}>退出</button>
+      <Button onClick={logout}>退出</Button>
       <ProjectListScreen />
     </div>
   );

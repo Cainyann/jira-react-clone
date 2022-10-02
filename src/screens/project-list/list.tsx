@@ -1,4 +1,5 @@
 import React from "react";
+import { Table } from "antd";
 
 interface User {
   id: number;
@@ -10,17 +11,19 @@ interface User {
 interface Project {
   id: number;
   name: string;
-  personId: number;
+  personId: string;
   pin: boolean;
   organization: string;
   created: number;
+  key: string;
 }
 interface ListProps {
   users: User[];
   projectList: Project[];
 }
 
-const List = ({ projectList, users }: ListProps) => {
+//不使用antd
+/* const oldList = ({ projectList, users }: ListProps) => {
   return (
     <table>
       <thead>
@@ -47,6 +50,38 @@ const List = ({ projectList, users }: ListProps) => {
         })}
       </tbody>
     </table>
+  );
+}; */
+
+//使用antd
+const List = ({ projectList, users }: ListProps) => {
+  return (
+    <div>
+      <Table
+        pagination={false}
+        dataSource={projectList}
+        columns={[
+          {
+            title: "名称",
+            dataIndex: "name",
+            key: "name",
+          },
+          {
+            title: "负责人",
+            dataIndex: "personId",
+            key: "personId",
+            render(dataIndex: number) {
+              const personId = dataIndex;
+              //通过psrsonId获取users中对应的personName
+              //?.:防止出现undefined.name
+              const personName =
+                users.find((user) => user.id === personId)?.name || "未知";
+              return <span key={personId}>{personName}</span>;
+            },
+          },
+        ]}
+      />
+    </div>
   );
 };
 

@@ -164,6 +164,80 @@ const apiUrl = process.env.REACT_APP_API_URL
 
 ## antd
 
+> ref:https://ant.design/docs/react/use-with-create-react-app-cn --高级配置
+
 ```
 yarn add antd
+```
+
+src/index.ts 中引入 antd，务必在 jira-dev-tool 之后引入以覆盖 tool 中的 antd 样式
+
+```
+import 'antd/dist/antd.less'
+```
+
+```
+$ yarn add @craco/craco
+```
+
+```
+/* package.json */
+"scripts": {
+-   "start": "react-scripts start",
+-   "build": "react-scripts build",
+-   "test": "react-scripts test",
++   "start": "craco start",
++   "build": "craco build",
++   "test": "craco test",
+}
+```
+
+然后安装 craco-less。并在项目根目录创建一个 craco.config.js 用于修改默认配置。
+
+```
+$ yarn add craco-less
+```
+
+```
+const CracoLessPlugin = require('craco-less');
+
+module.exports = {
+  plugins: [
+    {
+      plugin: CracoLessPlugin,
+      options: {
+        lessLoaderOptions: {
+          lessOptions: {
+            modifyVars: { '@primary-color': '#1DA57A' },
+            javascriptEnabled: true,
+          },
+        },
+      },
+    },
+  ],
+};
+```
+
+## CSS in JS : emotion
+
+app.css
+
+```
+html {
+  /* rem em */
+  /*em 相对于父元素的font-size*/
+  /*rem 相对于根元素html的font-size, r就是root的意思*/
+  /*16 * 62.5% = 10px*/
+  /*1rem === 10px*/
+  font-size: 62.5%;
+}
+
+/*viewport height === vh*/
+html body #root .App {
+  min-height: 100vh;
+}
+```
+
+```
+yarn add @emotion/react @emotion/styled
 ```

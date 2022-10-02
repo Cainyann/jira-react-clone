@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import LoginScreen from "./login";
 import RegisterScreen from "./register";
+import { Card, Button } from "antd";
 
 const UnAuthenticatedApp = () => {
   const [isRegister, setIsRegister] = useState(false);
@@ -9,10 +10,12 @@ const UnAuthenticatedApp = () => {
   };
   return (
     <div>
-      {isRegister ? <RegisterScreen /> : <LoginScreen />}
-      <button onClick={handleClick}>
-        切换到{isRegister ? "登陆" : "注册"}
-      </button>
+      <Card style={{ width: 400 }}>
+        {isRegister ? <RegisterScreen /> : <LoginScreen />}
+        <Button onClick={handleClick}>
+          切换到{isRegister ? "登陆" : "注册"}
+        </Button>
+      </Card>
     </div>
   );
 };

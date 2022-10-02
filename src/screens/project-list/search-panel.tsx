@@ -1,4 +1,7 @@
 import React from "react";
+import { Form, Input, Select } from "antd";
+
+const { Option } = Select;
 
 export interface User {
   id: string;
@@ -24,27 +27,42 @@ const SearchPanel = ({
   setSearchParam,
   users,
 }: SearchPanelProps) => {
-  function handleSearch(e: any) {
+  /* function handleSearch(e: any) {
     setSearchParam({ ...searchParam, name: e.target.value });
   }
   function handleSelect(e: any) {
     setSearchParam({ ...searchParam, personId: e.target.value });
+  } */
+  function handleSearch(e: any) {
+    setSearchParam({ ...searchParam, name: e.target.value });
   }
+  function handleSelect(value: string) {
+    console.log(value);
+
+    setSearchParam({ ...searchParam, personId: value });
+  }
+
   return (
     <div>
-      <form action={""}>
-        <input type="text" onChange={handleSearch}></input>
+      <Form>
+        <Form.Item>
+          <Input type="text" onChange={handleSearch}></Input>
+        </Form.Item>
 
-        <select onChange={handleSelect}>
-          <option value="">负责人</option>
+        <Form.Item>
+          <Select onChange={handleSelect} defaultValue="负责人">
+            <Option value="" key="leader">
+              负责人
+            </Option>
 
-          {users.map((user) => (
-            <option value={user.id} key={user.id}>
-              {user.name}
-            </option>
-          ))}
-        </select>
-      </form>
+            {users.map((user) => (
+              <Option value={user.id} key={user.id}>
+                {user.name}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
+      </Form>
     </div>
   );
 };
