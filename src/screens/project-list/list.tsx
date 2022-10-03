@@ -1,12 +1,13 @@
 import React from "react";
 import { Table } from "antd";
+import dayjs from "dayjs";
 
 interface User {
   id: number;
   name: string;
   email: string;
   title: string;
-  organization: string;
+  organization: number;
 }
 interface Project {
   id: number;
@@ -65,6 +66,12 @@ const List = ({ projectList, users }: ListProps) => {
             title: "名称",
             dataIndex: "name",
             key: "name",
+            sorter: (a, b) => a.name.localeCompare(b.name), //localeCompare字符串比较 升序
+          },
+          {
+            title: "部门",
+            dataIndex: "organization",
+            key: "organization",
           },
           {
             title: "负责人",
@@ -77,6 +84,18 @@ const List = ({ projectList, users }: ListProps) => {
               const personName =
                 users.find((user) => user.id === personId)?.name || "未知";
               return <span key={personId}>{personName}</span>;
+            },
+          },
+          {
+            title: "创建时间",
+            dataIndex: "created",
+            key: "created",
+            render(dataIndex: number) {
+              return (
+                <span>
+                  {dataIndex ? dayjs(dataIndex).format("YYYY-MM-DD") : "无"}
+                </span>
+              );
             },
           },
         ]}

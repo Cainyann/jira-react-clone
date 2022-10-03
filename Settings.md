@@ -241,3 +241,11 @@ html body #root .App {
 ```
 yarn add @emotion/react @emotion/styled
 ```
+
+安装插件 styled-component 💅
+
+## 时间数据
+
+```
+yarn add dayjs
+```

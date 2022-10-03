@@ -1,3 +1,5 @@
+// /** @jsx jsx */
+/** @jsxImportSource @emotion/react */
 import React from "react";
 import { Form, Input, Select } from "antd";
 
@@ -44,9 +46,13 @@ const SearchPanel = ({
 
   return (
     <div>
-      <Form>
+      <Form css={{ marginBottom: "2rem" }} layout={"inline"}>
         <Form.Item>
-          <Input type="text" onChange={handleSearch}></Input>
+          <Input
+            type="text"
+            onChange={handleSearch}
+            placeholder="项目名称"
+          ></Input>
         </Form.Item>
 
         <Form.Item>

@@ -3,6 +3,7 @@ import List from "./list";
 import SearchPanel from "./search-panel";
 import { cleanObject, useDebounce, useMount } from "../../utils/index";
 import { useHttp } from "../../utils/http";
+import styled from "@emotion/styled";
 
 const ProjectListScreen = () => {
   const [searchParam, setSearchParam] = useState({
@@ -52,15 +53,21 @@ const ProjectListScreen = () => {
   });
 
   return (
-    <div>
+    <Container style={{ width: "100%" }}>
+      <h1>项目列表</h1>
       <SearchPanel
         searchParam={searchParam}
         setSearchParam={setSearchParam}
         users={users}
       />
       <List projectList={projectList} users={users} />
-    </div>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  padding-left: 3.2rem;
+  padding-right: 3.2rem;
+`;
 
 export default ProjectListScreen;
