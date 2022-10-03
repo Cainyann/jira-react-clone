@@ -14,6 +14,7 @@ const defaultConfig = {
   throwOnError: false,
 };
 
+//D用于指定data的类型
 export const useAsync = <D>(
   initialState?: State<D>,
   initialConfig?: typeof defaultConfig
@@ -59,6 +60,6 @@ export const useAsync = <D>(
     setError,
     // retry 被调用时重新跑一遍run，让state刷新一遍
     // retry,
-    ...state,
+    ...state, //包含status data error
   };
 };

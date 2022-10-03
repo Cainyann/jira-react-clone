@@ -4,7 +4,6 @@ import SearchPanel from "./search-panel";
 import { cleanObject, useDebounce, useMount } from "../../utils/index";
 import { useHttp } from "../../utils/http";
 import styled from "@emotion/styled";
-import { setMaxListeners } from "ws";
 import { Typography } from "antd";
 
 const ProjectListScreen = () => {

@@ -2,7 +2,9 @@ import React, { ReactNode, useState } from "react";
 import * as auth from "../auth-provider-helper"; //login logout register等名字重了：import * as,用auth.login调用方法
 import { http } from "../utils/http";
 import { User } from "../screens/project-list/search-panel";
-import { useMount } from "utils/index";
+import { useMount } from "../utils/index";
+import { useAsync } from "../utils/use-async";
+import { FullPageLoading, FullPageError } from "../components/full-page";
 
 interface AuthForm {
   username: string;
@@ -11,7 +13,7 @@ interface AuthForm {
 
 //问题：页面刷新的时候state中的user消失导致projectListScreen又回到登陆页面
 //解决：刷新时初始化user
-const bootstrapUser = async () => {
+const bootstrapUser = async (): Promise<User> => {
   let user = null;
   const token = auth.getToken();
   if (token) {
@@ -34,7 +36,15 @@ AuthContext.displayName = "AuthContext"; //用于devtool
 
 //provider函数
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const {
+    asyncRun,
+    data: user,
+    setData: setUser,
+    isLoading,
+    isIdle,
+    isError,
+    error,
+  } = useAsync<User | null>();
 
   const login = (form: AuthForm) =>
     auth.login(form).then((user) => setUser(user));
@@ -46,8 +56,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   //初始化user
   useMount(() => {
-    bootstrapUser().then((user) => setUser(user));
+    // bootstrapUser().then((user) => setUser(user)); //
+    //改用useAsync
+    asyncRun(bootstrapUser());
   });
+
+  //在用户信息 me接口还没返回时展现Loading...
+  if (isIdle || isLoading) {
+    return <FullPageLoading />;
+  }
+  //在用户信息 me接口返回失败时
+  if (isError) {
+    return <FullPageError error={error} />;
+  }
 
   return (
     <AuthContext.Provider
