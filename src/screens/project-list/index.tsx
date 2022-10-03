@@ -4,8 +4,12 @@ import SearchPanel from "./search-panel";
 import { cleanObject, useDebounce, useMount } from "../../utils/index";
 import { useHttp } from "../../utils/http";
 import styled from "@emotion/styled";
+import { setMaxListeners } from "ws";
+import { Typography } from "antd";
 
 const ProjectListScreen = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [err, setErr] = useState<Error | null>(null);
   const [searchParam, setSearchParam] = useState({
     name: "",
     personId: "",
@@ -27,9 +31,16 @@ const ProjectListScreen = () => {
         }
       }
     ); */
-    client("projects", { data: cleanObject(debounceParam) }).then((data) =>
-      setProjectList(data)
-    );
+
+    setIsLoading(true);
+    client("projects", { data: cleanObject(debounceParam) })
+      .then((data) => setProjectList(data))
+      .catch((error) => {
+        setProjectList([]);
+        setErr(error);
+      })
+      .finally(() => setIsLoading(false));
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounceParam]);
 
   //组件挂载时fetch users
@@ -60,14 +71,18 @@ const ProjectListScreen = () => {
         setSearchParam={setSearchParam}
         users={users}
       />
-      <List projectList={projectList} users={users} />
+      {err ? (
+        <Typography.Text type="danger">{err.message}</Typography.Text>
+      ) : null}
+      <List users={users} dataSource={projectList} loading={isLoading} />
     </Container>
   );
 };
 
 const Container = styled.div`
-  padding-left: 3.2rem;
-  padding-right: 3.2rem;
+  /* padding-left: 3.2rem; */
+  /* padding-right: 3.2rem; */
+  padding: 1.2rem 3.2rem 1.2rem 3.2rem;
 `;
 
 export default ProjectListScreen;

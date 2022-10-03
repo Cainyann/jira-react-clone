@@ -1,5 +1,5 @@
 import React from "react";
-import { Table } from "antd";
+import { Table, TableProps } from "antd";
 import dayjs from "dayjs";
 
 interface User {
@@ -18,9 +18,8 @@ interface Project {
   created: number;
   key: string;
 }
-interface ListProps {
+interface ListProps extends TableProps<Project> {
   users: User[];
-  projectList: Project[];
 }
 
 //不使用antd
@@ -55,12 +54,12 @@ interface ListProps {
 }; */
 
 //使用antd
-const List = ({ projectList, users }: ListProps) => {
+const List = ({ users, ...props }: ListProps) => {
   return (
     <div>
       <Table
+        {...props}
         pagination={false}
-        dataSource={projectList}
         columns={[
           {
             title: "名称",

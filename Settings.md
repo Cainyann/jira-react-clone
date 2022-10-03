@@ -51,7 +51,7 @@ npx mrm@2 lint-staged
   }
 ```
 
-### 3.解决 eslink 冲突
+### 3.解决 eslint 冲突
 
 ESLint (and other linters)章节
 
@@ -248,4 +248,41 @@ yarn add @emotion/react @emotion/styled
 
 ```
 yarn add dayjs
+```
+
+## jira-dev-tool
+
+冲突：Warning: Detected multiple renderers concurrently rendering the same context provider. This is currently unsupported.
+解决：yarn add jira-dev-tool@next
+
+```js
+import { DevTools, loadServer } from "jira-dev-tool";
+import "antd/dist/antd.less"; //务必在dev-tool之后引入
+
+loadServer(() => {
+  root.render(
+    <React.StrictMode>
+      <AppProvider>
+        <DevTools />
+        <App />
+      </AppProvider>
+    </React.StrictMode>
+  );
+});
+```
+
+修改 AppProvider
+
+```
+import React, { ReactNode } from "react";
+import { AuthProvider } from "./auth-context";
+import {QueryClient, QueryClientProvider,} from 'react-query'
+
+export const AppProvider = ({ children }: { children: ReactNode }) => {
+  return(
+    <QueryClientProvider client={new QueryClient()}>
+     <AuthProvider>{children}</AuthProvider>)
+    </QueryClientProvider>
+  )
+  }
 ```

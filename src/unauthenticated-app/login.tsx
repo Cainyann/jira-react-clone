@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAuth } from "../context/auth-context";
+import { useAsync } from "../utils/use-async";
 
 import { Button, Form, Input } from "antd";
 
-const LoginScreen = () => {
+const LoginScreen = ({
+  onError,
+}: {
+  onError: (errorMessage: String) => void;
+}) => {
   const { login } = useAuth();
+  const { asyncRun, isLoading } = useAsync(undefined, { throwOnError: true });
+  console.log(isLoading);
 
   /*  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -12,8 +19,15 @@ const LoginScreen = () => {
     const password = (e.currentTarget[1] as HTMLInputElement).value;
     login({ username, password });
   }; */
-  const handleSubmit = (values: { username: string; password: string }) => {
-    login(values);
+  const handleSubmit = async (values: {
+    username: string;
+    password: string;
+  }) => {
+    try {
+      await asyncRun(login(values));
+    } catch (err) {
+      onError((err as Error).message);
+    }
   };
   return (
     <div>
@@ -37,7 +51,7 @@ const LoginScreen = () => {
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={isLoading}>
             {" "}
             登陆{" "}
           </Button>

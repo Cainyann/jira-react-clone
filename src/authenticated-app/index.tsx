@@ -1,7 +1,7 @@
 import React from "react";
 import ProjectListScreen from "screens/project-list";
 import { useAuth } from "../context/auth-context";
-import { Menu, Dropdown } from "antd";
+import { Menu, Dropdown, Button } from "antd";
 import styled from "@emotion/styled";
 import { RowFlexEnd } from "../components/style";
 import { ReactComponent as SoftwareLogo } from "../assets/software-logo.svg";
@@ -11,7 +11,9 @@ const AuthenticatedApp = () => {
   const menu = (
     <Menu>
       <Menu.Item key={"logout"}>
-        <a onClick={logout}>退出</a>
+        <Button onClick={logout} type="link">
+          退出
+        </Button>
       </Menu.Item>
     </Menu>
   );
@@ -26,14 +28,15 @@ const AuthenticatedApp = () => {
         </HeaderLeft>
         <HeaderRight>
           <Dropdown overlay={menu}>
-            <a onClick={(e) => e.preventDefault()}>{`Hi,${user?.name}`}</a>
+            <Button onClick={(e) => e.preventDefault()} type="link">
+              Hi,{user?.name}
+            </Button>
           </Dropdown>
         </HeaderRight>
       </Header>
 
       <Main>
         <ProjectListScreen />
-        {/* <div style={{backgroundColor:"red"}}>hhhhhhhhhhhhhhhhhh</div> */}
       </Main>
     </Container>
   );
@@ -52,7 +55,7 @@ height: calc(100vh-6rem);
 
 const Container = styled.div`
   display: grid;
-  grid-template-rows: 6rem 1fr;
+  grid-template-rows: 4rem 1fr;
   height: 100vh;
   /* justify-items: stretch; */
   /* align-items: stretch; */
@@ -60,7 +63,7 @@ const Container = styled.div`
 
 // grid-area 用来给grid子元素起名字
 const Header = styled(RowFlexEnd)`
-  padding: 3.2rem;
+  padding: 0 3.2rem 0 3.2rem;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.1);
   z-index: 1;
 `;
