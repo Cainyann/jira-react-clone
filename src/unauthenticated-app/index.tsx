@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDocumentTitle } from "../utils/index";
 import LoginScreen from "./login";
 import RegisterScreen from "./register";
 import { Card, Button, Divider, Typography } from "antd";

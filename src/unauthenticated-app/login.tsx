@@ -11,7 +11,6 @@ const LoginScreen = ({
 }) => {
   const { login } = useAuth();
   const { asyncRun, isLoading } = useAsync(undefined, { throwOnError: true });
-  console.log(isLoading);
 
   /*  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,8 +51,7 @@ const LoginScreen = ({
 
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={isLoading}>
-            {" "}
-            登陆{" "}
+            登陆
           </Button>
         </Form.Item>
       </Form>

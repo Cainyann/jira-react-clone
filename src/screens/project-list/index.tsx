@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import List from "./list";
 import SearchPanel from "./search-panel";
-import { cleanObject, useDebounce, useMount } from "../../utils/index";
+import {
+  cleanObject,
+  useDebounce,
+  useMount,
+  useDocumentTitle,
+} from "../../utils/index";
 import { useHttp } from "../../utils/http";
 import styled from "@emotion/styled";
 import { Typography } from "antd";
@@ -61,6 +66,8 @@ const ProjectListScreen = () => {
     }) */
     client("users").then((data) => setUsers(data));
   });
+
+  useDocumentTitle("项目列表", false);
 
   return (
     <Container style={{ width: "100%" }}>
