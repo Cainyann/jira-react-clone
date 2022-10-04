@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 //用于删除对象中的空值(undefined/null) 注意不包括0
 //注意避免更改传入的函数
@@ -47,7 +47,7 @@ export const useDebounce = <V>(value: V, delay: number) => {
 
 //用于更改页面标题
 export const useDocumentTitle = (title: string, keepTitleUnmount: boolean) => {
-  const oldTitle = document.title;
+  const oldTitle = useRef(document.title).current;
   useEffect(() => {
     document.title = title;
   }, [title]);
@@ -59,7 +59,7 @@ export const useDocumentTitle = (title: string, keepTitleUnmount: boolean) => {
         document.title = oldTitle;
       }
     };
-  }, []);
+  }, [title, oldTitle]);
 };
 
 //debounce原理
