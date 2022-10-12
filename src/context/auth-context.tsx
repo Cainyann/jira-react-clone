@@ -1,7 +1,7 @@
 import React, { ReactNode, useState } from "react";
 import * as auth from "../auth-provider-helper"; //login logout register等名字重了：import * as,用auth.login调用方法
 import { http } from "../utils/http";
-import { User } from "../screens/project-list/search-panel";
+import { User } from "types/user";
 import { useMount } from "../utils/index";
 import { useAsync } from "../utils/use-async";
 import { FullPageLoading, FullPageError } from "../components/full-page";

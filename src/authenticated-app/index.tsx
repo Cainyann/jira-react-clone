@@ -1,12 +1,35 @@
 import React from "react";
-import ProjectListScreen from "screens/project-list";
+import ProjectListScreen from "screens/project-list-screen";
 import { useAuth } from "../context/auth-context";
+import { Route, Routes, Link } from "react-router-dom";
 import { Menu, Dropdown, Button } from "antd";
 import styled from "@emotion/styled";
 import { RowFlexEnd } from "../components/style";
 import { ReactComponent as SoftwareLogo } from "../assets/software-logo.svg";
+import OneProjectScreen from "screens/one-project-screen";
+import OneProjectKanbanScreen from "screens/one-project-kanban-screen";
+import OneProjectTasksScreen from "screens/one-project-tasks-screen";
 
 const AuthenticatedApp = () => {
+  return (
+    <Container>
+      <PageHeader />
+      <Main>
+        <Routes>
+          <Route index={true} element={<ProjectListScreen />} />
+          <Route path="/projects" element={<ProjectListScreen />} />
+          <Route path="/projects/:projectId/*" element={<OneProjectScreen />}>
+            <Route path="view" element={<OneProjectKanbanScreen />} />
+            <Route path="tasks" element={<OneProjectTasksScreen />} />
+          </Route>
+        </Routes>
+      </Main>
+    </Container>
+  );
+};
+export default AuthenticatedApp;
+
+const PageHeader = () => {
   const { logout, user } = useAuth();
   const menu = (
     <Menu>
@@ -17,38 +40,27 @@ const AuthenticatedApp = () => {
       </Menu.Item>
     </Menu>
   );
-
   return (
-    <Container>
-      <Header spaceBetween={true}>
-        <HeaderLeft gap={true}>
+    <Header spaceBetween={true}>
+      <HeaderLeft gap={true}>
+        <Link to="/">
           <SoftwareLogo width={"10rem"} color={"rgb(38, 132, 255)"} />
-          <h3>项目</h3>
-          <h3>用户</h3>
-        </HeaderLeft>
-        <HeaderRight>
-          <Dropdown overlay={menu}>
-            <Button onClick={(e) => e.preventDefault()} type="link">
-              Hi,{user?.name}
-            </Button>
-          </Dropdown>
-        </HeaderRight>
-      </Header>
-
-      <Main>
-        <ProjectListScreen />
-      </Main>
-    </Container>
+        </Link>
+        <h3>项目</h3>
+        <h3>用户</h3>
+      </HeaderLeft>
+      <HeaderRight>
+        <Dropdown overlay={menu}>
+          <Button onClick={(e) => e.preventDefault()} type="link">
+            Hi,{user?.name}
+          </Button>
+        </Dropdown>
+      </HeaderRight>
+    </Header>
   );
 };
 
-/* const PageHeader = styled.header`
-background-color: gray;
-height: 6rem;
-`
-const MainHeader = styled.header`
-height: calc(100vh-6rem);
-` */
+/* --------------------------------- 以下是样式--------------------------------- */
 
 //从内容出发用flex，从布局出发用grid;一维用felx，二维用flex
 //grid-area用来给子元素起名
@@ -73,5 +85,3 @@ const Main = styled.main`
   display: flex;
   overflow: hidden;
 `;
-
-export default AuthenticatedApp;

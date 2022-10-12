@@ -3,7 +3,6 @@ import { useAuth } from "../context/auth-context";
 import { useAsync } from "../utils/use-async";
 
 import { Button, Form, Input } from "antd";
-// {onError}:{onError:(error:Error)=>void}
 const RegisterScreen = ({
   onError,
 }: {
@@ -36,6 +35,7 @@ const RegisterScreen = ({
       onError((err as Error).message); //注意添加asyc和await否则onError立即执行，捕捉不到异步函数register的错误！！！
     }
   };
+
   return (
     <div>
       <Form onFinish={handleSubmit}>

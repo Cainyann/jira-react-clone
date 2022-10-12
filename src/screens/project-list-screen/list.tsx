@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Table, TableProps } from "antd";
 import dayjs from "dayjs";
 
@@ -66,6 +67,9 @@ const List = ({ users, ...props }: ListProps) => {
             dataIndex: "name",
             key: "name",
             sorter: (a, b) => a.name.localeCompare(b.name), //localeCompare字符串比较 升序
+            render(value, project) {
+              return <Link to={`/projects/${project.id}`}>{project.name}</Link>;
+            },
           },
           {
             title: "部门",

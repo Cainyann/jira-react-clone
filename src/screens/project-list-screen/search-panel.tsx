@@ -2,26 +2,16 @@
 /** @jsxImportSource @emotion/react */
 import React from "react";
 import { Form, Input, Select } from "antd";
+import { UserSelect } from "components/user-select";
+import { Project } from "types/projects";
+import { User } from "types/user";
 
 const { Option } = Select;
 
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  title: string;
-  organization: string;
-  token: string;
-  password: string;
-}
-
 interface SearchPanelProps {
-  searchParam: {
-    name: string;
-    personId: string;
-  };
-  setSearchParam: (searchParam: SearchPanelProps["searchParam"]) => void;
   users: User[];
+  searchParam: Partial<Pick<Project, "name" | "personId">>;
+  setSearchParam: (searchParam: SearchPanelProps["searchParam"]) => void;
 }
 
 const SearchPanel = ({
@@ -38,9 +28,7 @@ const SearchPanel = ({
   function handleSearch(e: any) {
     setSearchParam({ ...searchParam, name: e.target.value });
   }
-  function handleSelect(value: string) {
-    console.log(value);
-
+  function handleSelect(value: number | undefined) {
     setSearchParam({ ...searchParam, personId: value });
   }
 
@@ -51,22 +39,27 @@ const SearchPanel = ({
           <Input
             type="text"
             onChange={handleSearch}
+            value={searchParam.name}
             placeholder="项目名称"
           ></Input>
         </Form.Item>
 
         <Form.Item>
-          <Select onChange={handleSelect} defaultValue="负责人">
-            <Option value="" key="leader">
-              负责人
-            </Option>
-
+          {/* <Select onChange={handleSelect} defaultValue={"leader"} >
+            <Option value={"leader"} key={"leader"}>{"负责人"}</Option>
+          
             {users.map((user) => (
               <Option value={user.id} key={user.id}>
                 {user.name}
               </Option>
             ))}
-          </Select>
+          </Select> */}
+
+          <UserSelect
+            defaultOptionName={"负责人"}
+            value={searchParam.personId}
+            onChange={handleSelect}
+          />
         </Form.Item>
       </Form>
     </div>

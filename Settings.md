@@ -286,3 +286,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   )
   }
 ```
+
+## 路由
+
+```
+yarn add react-router@latest react-router-dom@latest history@latest
+```

@@ -8,17 +8,16 @@ import {
   useDocumentTitle,
 } from "../../utils/index";
 import { useHttp } from "../../utils/http";
+import { useUrlQueryParam } from "../../utils/url";
 import styled from "@emotion/styled";
 import { Typography } from "antd";
 
 const ProjectListScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [err, setErr] = useState<Error | null>(null);
-  const [searchParam, setSearchParam] = useState({
-    name: "",
-    personId: "",
-  });
-  const debounceParam = useDebounce(searchParam, 200);
+
+  const [searchParam, setSearchParam] = useUrlQueryParam(["name", "personId"]);
+  const debounceParam = useDebounce(searchParam, 300);
   const [users, setUsers] = useState([]); //用户选项
   const [projectList, setProjectList] = useState([]); //展示列表
   const client = useHttp();
