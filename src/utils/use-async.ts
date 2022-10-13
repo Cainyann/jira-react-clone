@@ -25,15 +25,25 @@ export const useAsync = <D>(
   });
   const config = { ...defaultConfig, ...initialConfig };
 
+  //useState惰性初始化
+  const [retry, setRetry] = useState(() => () => {}); //两层函数，这时候retry类型为:()=>void
   const setData = (data: D) =>
     setState({ data, error: null, status: "success" });
   const setError = (error: Error) =>
     setState({ error, status: "error", data: null });
 
-  const asyncRun = (promise: Promise<D>) => {
+  const asyncRun = (
+    promise: Promise<D>,
+    runConfig?: { retry: () => Promise<D> }
+  ) => {
     if (!promise || !promise.then) {
       throw new Error("请传入 Promise 类型数据");
     }
+    setRetry(() => () => {
+      if (runConfig?.retry) {
+        asyncRun(runConfig?.retry(), runConfig);
+      }
+    });
     setState({ ...state, status: "loading" });
     return promise
       .then((data) => {
@@ -58,8 +68,8 @@ export const useAsync = <D>(
     asyncRun,
     setData,
     setError,
-    // retry 被调用时重新跑一遍run，让state刷新一遍
-    // retry,
+    // 当retry 被调用时重新跑一遍run，让组件state刷新一遍
+    retry,
     ...state, //包含status data error
   };
 };

@@ -2,25 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Table, TableProps } from "antd";
 import dayjs from "dayjs";
+import { User } from "types/user";
+import { Project } from "types/projects";
+import { Star } from "components/star";
+import { useEditProject } from "utils/project";
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  title: string;
-  organization: number;
-}
-interface Project {
-  id: number;
-  name: string;
-  personId: string;
-  pin: boolean;
-  organization: string;
-  created: number;
-  key: string;
-}
+//透传
 interface ListProps extends TableProps<Project> {
   users: User[];
+  refresh?: () => void;
 }
 
 //不使用antd
@@ -56,12 +46,30 @@ interface ListProps extends TableProps<Project> {
 
 //使用antd
 const List = ({ users, ...props }: ListProps) => {
+  const { editMutate } = useEditProject();
+  // const editProjectPin = (id:number,pin:boolean)=>editMutate({id,pin})
+  //改进：函数科里化
+  const editProjectPin = (id: number) => (pin: boolean) =>
+    editMutate({ id, pin }).then(props.refresh); //编辑后刷新重新获取
   return (
     <div>
       <Table
         {...props}
         pagination={false}
         columns={[
+          {
+            title: <Star checked={true} disabled={true} />,
+            render(value, project) {
+              return (
+                <Star
+                  checked={project.pin}
+                  // onCheckedChange={pin=>editProjectPin(project.id,pin)}
+                  //函数科里化
+                  onCheckedChange={editProjectPin(project.id)}
+                />
+              );
+            },
+          },
           {
             title: "名称",
             dataIndex: "name",
@@ -85,7 +93,7 @@ const List = ({ users, ...props }: ListProps) => {
               //通过psrsonId获取users中对应的personName
               //?.:防止出现undefined.name
               const personName =
-                users.find((user) => user.id === personId)?.name || "未知";
+                users?.find((user) => user.id === personId)?.name || "未知";
               return <span key={personId}>{personName}</span>;
             },
           },
