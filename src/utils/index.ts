@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 
 //用于删除对象中的空值(undefined/null) 注意不包括0
 //注意避免更改传入的函数
@@ -59,7 +59,7 @@ export const useDocumentTitle = (title: string, keepTitleUnmount: boolean) => {
         document.title = oldTitle;
       }
     };
-  }, [title, oldTitle]);
+  }, [title, oldTitle, keepTitleUnmount]);
 };
 
 //debounce原理
@@ -89,3 +89,17 @@ export const useDocumentTitle = (title: string, keepTitleUnmount: boolean) => {
 //     log()#2 // 发现 timeout#1！取消之，然后设置timeout#2
 //     log()#3 // 发现 timeout#2! 取消之，然后设置timeout#3
 //             // 所以，log()#3 结束后，就只剩timeout#3在独自等待了
+
+// 返回组件的挂载状态，如果还没挂载或者已经卸载，返回false；反之，返回true
+export const useMountedRef = () => {
+  const mountedRef = useRef(false);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  });
+
+  return mountedRef;
+};

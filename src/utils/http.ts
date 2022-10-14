@@ -1,5 +1,6 @@
 //实现通用的异步请求方法
 //在headers里面携带token来解决401 (Unauthorized)
+import { useCallback } from "react";
 import qs from "qs";
 import * as auth from "../auth-provider-helper";
 import { useAuth } from "../context/auth-context";
@@ -58,6 +59,9 @@ export const useHttp = () => {
   const { user } = useAuth();
   //utility type: Parameters
   //这里的typeof是在静态环境中运行的，区别与js中的typeof是在runtime运行的
-  return (...[endpoint, config]: Parameters<typeof http>) =>
-    http(endpoint, { ...config, token: user?.token });
+  return useCallback(
+    (...[endpoint, config]: Parameters<typeof http>) =>
+      http(endpoint, { ...config, token: user?.token }),
+    [user?.token]
+  );
 };

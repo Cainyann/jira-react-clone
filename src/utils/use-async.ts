@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 interface State<D> {
   error: Error | null;
   data: D | null;
@@ -27,39 +27,46 @@ export const useAsync = <D>(
 
   //useState惰性初始化
   const [retry, setRetry] = useState(() => () => {}); //两层函数，这时候retry类型为:()=>void
-  const setData = (data: D) =>
-    setState({ data, error: null, status: "success" });
-  const setError = (error: Error) =>
-    setState({ error, status: "error", data: null });
+  const setData = useCallback(
+    (data: D) => setState({ data, error: null, status: "success" }),
+    []
+  );
 
-  const asyncRun = (
-    promise: Promise<D>,
-    runConfig?: { retry: () => Promise<D> }
-  ) => {
-    if (!promise || !promise.then) {
-      throw new Error("请传入 Promise 类型数据");
-    }
-    setRetry(() => () => {
-      if (runConfig?.retry) {
-        asyncRun(runConfig?.retry(), runConfig);
+  const setError = useCallback(
+    (error: Error) => setState({ error, status: "error", data: null }),
+    []
+  );
+
+  const asyncRun = useCallback(
+    (promise: Promise<D>, runConfig?: { retry: () => Promise<D> }) => {
+      if (!promise || !promise.then) {
+        throw new Error("请传入 Promise 类型数据");
       }
-    });
-    setState({ ...state, status: "loading" });
-    return promise
-      .then((data) => {
-        setData(data);
-        return data;
-      })
-      .catch((error) => {
-        setError(error);
-        // return error
-        if (config.throwOnError) {
-          //error需要被外部接收的情形
-          return Promise.reject(error); //catch会消化异常，如果不主动抛出异常，外部就无法接收到异常
+      setRetry(() => () => {
+        if (runConfig?.retry) {
+          asyncRun(runConfig?.retry(), runConfig);
         }
-        return error;
       });
-  };
+      // setState({ ...state, status: "loading" });
+      setState((prevState) => ({ ...prevState, status: "loading" }));
+      return promise
+        .then((data) => {
+          setData(data);
+          return data;
+        })
+        .catch((error) => {
+          setError(error);
+          // return error
+          if (config.throwOnError) {
+            //error需要被外部接收的情形
+            return Promise.reject(error); //catch会消化异常，如果不主动抛出异常，外部就无法接收到异常
+          }
+          return error;
+        });
+    },
+    [config.throwOnError, setData, setError]
+  );
+
   return {
     isIdle: state.status === "idle",
     isLoading: state.status === "loading",
