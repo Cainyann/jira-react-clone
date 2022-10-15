@@ -4,7 +4,7 @@ import { useHttp } from "./http";
 import { Project } from "types/projects";
 import { cleanObject } from "utils";
 
-//用于提供projects及相关
+//用于传入参数获取peojects相关数据
 export const useProjects = (param?: Partial<Project>) => {
   const client = useHttp();
   const { asyncRun, ...otherAsyncResults } = useAsync<Project[]>();
@@ -43,4 +43,17 @@ export const useAddProject = () => {
     return asyncRun(client(`projects/`, { data: params, method: "POST" }));
   };
   return { addMutate, ...otherAsyncResults };
+};
+
+//用于删除project
+export const useDeleteProject = () => {
+  const { asyncRun, ...otherAsyncResults } = useAsync();
+  const client = useHttp();
+  //project改变 需要传入参数：被delete的project.id
+  const deleteMutate = (params: Partial<Project>) => {
+    return asyncRun(
+      client(`projects/${params.id}`, { data: params, method: "DELETE" })
+    );
+  };
+  return { deleteMutate, ...otherAsyncResults };
 };

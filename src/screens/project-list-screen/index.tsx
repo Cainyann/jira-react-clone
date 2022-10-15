@@ -8,7 +8,7 @@ import { Typography } from "antd";
 import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
 import { ButtonNoPadding, RowFlexEnd } from "components/lib";
-import { useProjectModal } from "./util";
+import { useProjectModal } from "./project-modal-util";
 
 const ProjectListScreen = () => {
   useDocumentTitle("项目列表", false);

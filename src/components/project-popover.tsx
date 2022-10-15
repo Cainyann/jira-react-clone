@@ -2,7 +2,7 @@ import { Divider, List, Popover, Typography } from "antd";
 import React from "react";
 import styled from "@emotion/styled";
 import { useProjects } from "utils/project";
-import { useProjectModal } from "screens/project-list-screen/util";
+import { useProjectModal } from "screens/project-list-screen/project-modal-util";
 import { ButtonNoPadding } from "./lib";
 
 const ProjectPopover = () => {
