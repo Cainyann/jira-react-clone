@@ -7,6 +7,8 @@ import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { useProjects } from "utils/project";
 import { useUsers } from "utils/user";
+import { ButtonNoPadding, RowFlexEnd } from "components/lib";
+import { useProjectModal } from "./util";
 
 const ProjectListScreen = () => {
   useDocumentTitle("项目列表", false);
@@ -24,6 +26,7 @@ const ProjectListScreen = () => {
     data: projectList,
     retry,
   } = useProjects(debounceParam);
+  const { openModal } = useProjectModal();
 
   //在搜索信息searchParams变化的时候请求接口fetch usersList
   // useEffect(() => {
@@ -71,15 +74,24 @@ const ProjectListScreen = () => {
 
   return (
     <Container style={{ width: "100%" }}>
-      <h1>项目列表</h1>
+      <RowFlexEnd spaceBetween={true} marginBottom={2}>
+        <h1>项目列表</h1>
+        {/* {props.projectModalButton} */}
+        <ButtonNoPadding type="link" onClick={openModal}>
+          创建项目
+        </ButtonNoPadding>
+      </RowFlexEnd>
+
       <SearchPanel
         searchParam={searchParam}
         setSearchParam={setSearchParam}
         users={users || []}
       />
+
       {error ? (
         <Typography.Text type="danger">{error.message}</Typography.Text>
       ) : null}
+
       <List
         users={users || []}
         dataSource={projectList || []}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ProjectListScreen from "screens/project-list-screen";
 import { useAuth } from "../context/auth-context";
 import { Route, Routes, Link } from "react-router-dom";
@@ -9,8 +9,18 @@ import { ReactComponent as SoftwareLogo } from "../assets/software-logo.svg";
 import OneProjectScreen from "screens/one-project-screen";
 import OneProjectKanbanScreen from "screens/one-project-kanban-screen";
 import OneProjectTasksScreen from "screens/one-project-tasks-screen";
+import ProjectModal from "components/project-modal";
+import ProjectPopover from "components/project-popover";
+import { ButtonNoPadding } from "components/lib";
 
 const AuthenticatedApp = () => {
+  // const [projectModalOpen, setProjectModalOpen] = useState(false)
+
+  // const projectModalButton = <ButtonNoPadding
+  //   type="link" onClick={() => setProjectModalOpen(true)}>
+  //   创建项目
+  //    </ButtonNoPadding>
+
   return (
     <Container>
       <PageHeader />
@@ -24,12 +34,30 @@ const AuthenticatedApp = () => {
           </Route>
         </Routes>
       </Main>
+      <ProjectModal />
     </Container>
   );
 };
 export default AuthenticatedApp;
 
 const PageHeader = () => {
+  return (
+    <Header spaceBetween={true}>
+      <HeaderLeft gap={true}>
+        <Link to="/">
+          <SoftwareLogo width={"10rem"} color={"rgb(38, 132, 255)"} />
+        </Link>
+        <ProjectPopover />
+        <span>用户</span>
+      </HeaderLeft>
+      <HeaderRight>
+        <User />
+      </HeaderRight>
+    </Header>
+  );
+};
+
+const User = () => {
   const { logout, user } = useAuth();
   const menu = (
     <Menu>
@@ -41,22 +69,11 @@ const PageHeader = () => {
     </Menu>
   );
   return (
-    <Header spaceBetween={true}>
-      <HeaderLeft gap={true}>
-        <Link to="/">
-          <SoftwareLogo width={"10rem"} color={"rgb(38, 132, 255)"} />
-        </Link>
-        <h3>项目</h3>
-        <h3>用户</h3>
-      </HeaderLeft>
-      <HeaderRight>
-        <Dropdown overlay={menu}>
-          <Button onClick={(e) => e.preventDefault()} type="link">
-            Hi,{user?.name}
-          </Button>
-        </Dropdown>
-      </HeaderRight>
-    </Header>
+    <Dropdown overlay={menu}>
+      <Button onClick={(e) => e.preventDefault()} type="link">
+        Hi,{user?.name}
+      </Button>
+    </Dropdown>
   );
 };
 

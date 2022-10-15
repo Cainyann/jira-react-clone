@@ -47,7 +47,7 @@ export const useAsync = <D>(
           asyncRun(runConfig?.retry(), runConfig);
         }
       });
-      // setState({ ...state, status: "loading" });
+      // 解决无限循环：setState({ ...state, status: "loading" });
       setState((prevState) => ({ ...prevState, status: "loading" }));
       return promise
         .then((data) => {
@@ -75,7 +75,7 @@ export const useAsync = <D>(
     asyncRun,
     setData,
     setError,
-    // 当retry 被调用时重新跑一遍run，让组件state刷新一遍
+    // 当retry 被调用时重新跑一遍asyncRun，让组件state刷新一遍
     retry,
     ...state, //包含status data error
   };

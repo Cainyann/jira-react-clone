@@ -14,11 +14,7 @@ interface SearchPanelProps {
   setSearchParam: (searchParam: SearchPanelProps["searchParam"]) => void;
 }
 
-const SearchPanel = ({
-  searchParam,
-  setSearchParam,
-  users,
-}: SearchPanelProps) => {
+const SearchPanel = ({ searchParam, setSearchParam }: SearchPanelProps) => {
   /* function handleSearch(e: any) {
     setSearchParam({ ...searchParam, name: e.target.value });
   }
