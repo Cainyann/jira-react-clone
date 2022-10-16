@@ -12,19 +12,20 @@ import { useAddProject, useEditProject, useProjects } from "utils/project";
 // }
 
 const ProjectModal = () => {
-  const { modalOpen, closeModal } = useProjectModal();
-  const { isLoading, error } = useProjects();
-  const { editingProjectData, editingLoading, editingProjectId } =
-    useProjectModal();
+  const {
+    modalOpen,
+    closeModal,
+    editingProjectId,
+    editingProjectData,
+    modalLaoding,
+    error,
+  } = useProjectModal();
 
   const title = editingProjectId ? "编辑项目" : "创建项目";
   const [form] = Form.useForm();
 
-  const useMutateProject = editingProjectId ? useEditProject : useAddProject;
-
-  const { editMutate } = useEditProject();
-  const { addMutate } = useAddProject();
-
+  const { editMutate, isLoading: editLoadig } = useEditProject();
+  const { addMutate, isLoading: addLoading } = useAddProject();
   const onFinish = (values: any) => {
     // console.log(values) //{name: 'mm', organization: 'mm', personId: undefined}
     (editingProjectId
@@ -35,6 +36,7 @@ const ProjectModal = () => {
       closeModal();
     });
   };
+  const submitLoading = editingProjectId ? editLoadig : addLoading;
 
   const close = () => {
     form.resetFields();
@@ -45,17 +47,10 @@ const ProjectModal = () => {
     form.setFieldsValue(editingProjectData);
   }, [editingProjectData, form]);
 
-  // const onFinish = (values: any) => {
-  //   mutateAsync({ ...editingProject, ...values }).then(() => {
-  //     form.resetFields();
-  //     close();
-  //   });
-  // };
-
   return (
     <Drawer visible={modalOpen} width="100%" onClose={close} forceRender={true}>
       <Container>
-        {isLoading ? (
+        {modalLaoding ? (
           <Spin size={"large"} />
         ) : (
           <>
@@ -89,7 +84,7 @@ const ProjectModal = () => {
 
               <Form.Item style={{ textAlign: "right" }}>
                 <Button
-                  // loading={editingLoading}
+                  loading={submitLoading}
                   type={"primary"}
                   htmlType={"submit"}
                 >

@@ -95,7 +95,7 @@ const ProjectListScreen = () => {
       <List
         users={users || []}
         dataSource={projectList || []}
-        loading={isLoading}
+        // loading={isLoading}
         refresh={retry}
       />
     </Container>

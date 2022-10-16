@@ -1,5 +1,5 @@
 import React from "react";
-import { useProjects } from "utils/project";
+import { useProject } from "utils/project";
 import { useSetUrlSearchParam, useUrlQueryParam } from "utils/url";
 
 //把modal的状态放到url中进行全局管理
@@ -11,9 +11,14 @@ export const useProjectModal = () => {
   const [{ editingProjectId }, setEditingProjectId] = useUrlQueryParam([
     "editingProjectId",
   ]);
-  const { data: editingProjectData, isLoading: editingLoading } = useProjects({
-    id: editingProjectId,
-  });
+  // const { data: editingProjectData, isLoading: editingLoading,error } = useProjects({
+  //   id: editingProjectId,
+  // });
+  const {
+    data: editingProjectData,
+    isLoading: modalLaoding,
+    error,
+  } = useProject(editingProjectId);
 
   const setSearchParams = useSetUrlSearchParam();
   const openModal = () => setProjectCreate({ projectCreate: true });
@@ -34,6 +39,7 @@ export const useProjectModal = () => {
     startEdit,
     editingProjectId,
     editingProjectData,
-    editingLoading,
+    modalLaoding,
+    error,
   };
 };

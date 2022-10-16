@@ -57,3 +57,24 @@ export const useDeleteProject = () => {
   };
   return { deleteMutate, ...otherAsyncResults };
 };
+
+//用于获取单个project数据
+export const useProject = (id: number) => {
+  const client = useHttp();
+  const { asyncRun, ...otherAsyncResults } = useAsync<Project>();
+
+  // const fetchProjects = useCallback(
+  //   () => client(`projects/${id}`),
+  //   [id,client]
+  // );
+
+  // asyncRun(client(`projects/${id}`))
+
+  // const getOneProject = (id:number)=>{
+  //   return asyncRun(client(`projects/${id}`))
+  // }
+  useEffect(() => {
+    asyncRun(client(`projects/${id}`));
+  }, [id, asyncRun, client]);
+  return otherAsyncResults;
+};

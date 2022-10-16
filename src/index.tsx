@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { DevTools, loadServer } from "jira-dev-tool";
-import "antd/dist/antd.less"; //务必在dev-tool之后引入
+// import "antd/dist/antd.less"; //务必在dev-tool之后引入
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { AppProvider } from "./context/index";
