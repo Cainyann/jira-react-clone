@@ -29,7 +29,7 @@ const ProjectModal = () => {
   const onFinish = (values: any) => {
     // console.log(values) //{name: 'mm', organization: 'mm', personId: undefined}
     (editingProjectId
-      ? editMutate({ id: editingProjectId, ...values })
+      ? editMutate({ id: Number(editingProjectId), ...values })
       : addMutate(values)
     ).then(() => {
       form.resetFields();

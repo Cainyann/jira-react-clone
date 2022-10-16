@@ -29,7 +29,7 @@ const AuthenticatedApp = () => {
           <Route index={true} element={<ProjectListScreen />} />
           <Route path="/projects" element={<ProjectListScreen />} />
           <Route path="/projects/:projectId/*" element={<OneProjectScreen />}>
-            <Route path="view" element={<OneProjectKanbanScreen />} />
+            <Route path="kanban" element={<OneProjectKanbanScreen />} />
             <Route path="tasks" element={<OneProjectTasksScreen />} />
           </Route>
         </Routes>

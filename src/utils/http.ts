@@ -12,6 +12,7 @@ interface Config extends RequestInit {
 const apiUrl = process.env.REACT_APP_API_URL;
 
 //关于类型可以查看http参数设定，考虑到RequestInit上没有token等，再进行extends
+//data是携带参数
 export const http = async (
   endpoint: string,
   { headers, data, token, ...customConfigs }: Config = {}

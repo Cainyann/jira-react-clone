@@ -46,7 +46,7 @@ export const useDebounce = <V>(value: V, delay: number) => {
 };
 
 //用于更改页面标题
-export const useDocumentTitle = (title: string, keepTitleUnmount: boolean) => {
+export const useDocumentTitle = (title: string, keepTitleUnmount?: boolean) => {
   const oldTitle = useRef(document.title).current;
   useEffect(() => {
     document.title = title;
