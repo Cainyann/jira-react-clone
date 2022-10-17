@@ -1,9 +1,11 @@
 import styled from "@emotion/styled";
 import KanbanColumn from "components/kanban-column";
+import { RowFlexEnd } from "components/lib";
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useDocumentTitle } from "utils";
 import { useKanbans } from "utils/kanban";
+import KanbanSearchPanel from "./kanban-search-panel";
 import { useCurrentProject, useProjectIdInUrl } from "./kanban-utils";
 
 const OneProjectKanbanScreen = () => {
@@ -13,11 +15,12 @@ const OneProjectKanbanScreen = () => {
   //获取当前project
   const currentProject = useCurrentProject();
 
-  console.log(kanbans);
-
   return (
     <div>
       <h1>{currentProject?.name} 看板</h1>
+      <RowFlexEnd marginBottom={2} gap={1}>
+        <KanbanSearchPanel />
+      </RowFlexEnd>
       <ColumnsContainer>
         {kanbans?.map((kanban) => (
           <div>

@@ -4,16 +4,32 @@ import { useTasks } from "utils/task";
 import taskIcon from "assets/task.svg";
 import bugIcon from "assets/bug.svg";
 import { Task } from "types/task";
-import React from "react";
+import React, { useMemo } from "react";
 import { Card } from "antd";
 import { useTaskTypes } from "utils/task-type";
+import { useKanbanTaskSearchParams } from "screens/one-project-kanban-screen/kanban-utils";
+import { useDebounce } from "utils";
 
 const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
   //获取所有tasks
-  const { data: allTasks } = useTasks();
+  // const { data:allTasks} = useTasks(useKanbanTaskSearchParams());
+  //对输入框值进行debounce处理
+  const searchParams = useKanbanTaskSearchParams();
+  const debounceParams = {
+    ...searchParams,
+    name: useDebounce(searchParams?.name, 200),
+  };
+  const { data: allTasks } = useTasks(debounceParams);
+
+  // const searchParams = useKanbanTaskSearchParams()
+  // const {data:allTasks} = useMemo(()=>(
+  //    useTasks(searchParams)
+  // ),[searchParams])
+
   //获取属于当前kanban的task
   const tasks = allTasks?.filter((task) => task.kanbanId === kanban.id);
-  //task对应的icon
+  // const tasks = useMemo(() => (allTasks?.filter((task) => task.kanbanId === kanban.id)), [allTasks,kanban.id])
+
   return (
     <Container>
       <h2>{kanban.name}</h2>

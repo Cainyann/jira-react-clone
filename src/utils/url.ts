@@ -1,13 +1,15 @@
 /* 返回页面url中指定键的参数值 */
-//在url中实现状态管理
+//利用useSearchParams在url中实现状态管理
 
 import { useMemo } from "react";
 import { URLSearchParamsInit, useSearchParams } from "react-router-dom";
 import { cleanObject } from "utils";
 
+//输入参数名称数组，返回searchParams对象
+//eg: const [params,setSearchParams] = useUrlQueryParam(["name","id","type"])
+//setSearchParams({...params,name:"tom"})
 export const useUrlQueryParam = <K extends string>(keys: K[]) => {
   const [searchParams, setSearchParams] = useSearchParams();
-
   return [
     useMemo(
       () =>
@@ -24,6 +26,10 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
   ] as const;
 };
 
+//返回setSearchParam函数
+// eg:const setSearchParams = useSetUrlSearchParam()
+//相比于上一个setSearchParams更简洁
+//eg: setSearchParams({name:"tom"})
 export const useSetUrlSearchParam = () => {
   const [searchParams, setSearchParam] = useSearchParams();
   return (params: { [key in string]: unknown }) => {
