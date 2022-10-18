@@ -4,11 +4,18 @@ import { useTasks } from "utils/task";
 import taskIcon from "assets/task.svg";
 import bugIcon from "assets/bug.svg";
 import { Task } from "types/task";
-import React, { useMemo } from "react";
-import { Card } from "antd";
+import React from "react";
+import { Button, Card, Dropdown, Menu, Modal } from "antd";
 import { useTaskTypes } from "utils/task-type";
-import { useKanbanTaskSearchParams } from "screens/one-project-kanban-screen/kanban-utils";
+import {
+  useKanbansQueryKey,
+  useKanbanTaskSearchParams,
+  useTaskEditModal,
+} from "screens/one-project-kanban-screen/kanban-utils";
 import { useDebounce } from "utils";
+import { useDeleteKanban } from "utils/kanban";
+import { RowFlexEnd } from "./lib";
+import CreateTask from "screens/one-project-kanban-screen/create-task";
 
 const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
   //获取所有tasks
@@ -21,22 +28,21 @@ const KanbanColumn = ({ kanban }: { kanban: Kanban }) => {
   };
   const { data: allTasks } = useTasks(debounceParams);
 
-  // const searchParams = useKanbanTaskSearchParams()
-  // const {data:allTasks} = useMemo(()=>(
-  //    useTasks(searchParams)
-  // ),[searchParams])
-
   //获取属于当前kanban的task
   const tasks = allTasks?.filter((task) => task.kanbanId === kanban.id);
   // const tasks = useMemo(() => (allTasks?.filter((task) => task.kanbanId === kanban.id)), [allTasks,kanban.id])
 
   return (
     <Container>
-      <h2>{kanban.name}</h2>
+      <RowFlexEnd spaceBetween={true}>
+        <h2>{kanban.name}</h2>
+        <More kanban={kanban} />
+      </RowFlexEnd>
       <TasksContainer>
         {tasks?.map((task) => (
           <TaskCard task={task} key={task.id} />
         ))}
+        <CreateTask kanbanId={kanban.id} />
       </TasksContainer>
     </Container>
   );
@@ -60,23 +66,60 @@ const TaskTypeIcon = ({ typeId }: { typeId: number }) => {
   );
 };
 
+//每个task
 const TaskCard = ({ task }: { task: Task }) => {
+  //利用当前taskId打开携带task数据的editModal
+  const { openTaskEditMoadl } = useTaskEditModal();
   return (
-    <Card style={{ marginBottom: "0.5rem", cursor: "pointer" }} key={task.id}>
+    <Card
+      style={{ marginBottom: "0.5rem", cursor: "pointer" }}
+      key={task.id}
+      onClick={() => openTaskEditMoadl(task.id)}
+    >
       <p>{task.name}</p>
       <TaskTypeIcon typeId={task.typeId} />
     </Card>
   );
 };
 
+//...删除键
+const More = ({ kanban }: { kanban: Kanban }) => {
+  const { mutateAsync: deleteKanban } = useDeleteKanban(useKanbansQueryKey());
+  const startDelete = () => {
+    Modal.confirm({
+      okText: "确定",
+      cancelText: "取消",
+      title: "确定删除看板吗",
+      onOk() {
+        return deleteKanban({ kanbanId: kanban.id });
+      },
+    });
+  };
+  const overlay = (
+    <Menu>
+      <Menu.Item>
+        <Button type={"link"} onClick={startDelete}>
+          删除
+        </Button>
+      </Menu.Item>
+    </Menu>
+  );
+  return (
+    <Dropdown overlay={overlay}>
+      <Button type={"link"}>...</Button>
+    </Dropdown>
+  );
+};
+
 export const Container = styled.div`
-  min-width: 27rem;
+  min-width: 18rem;
   border-radius: 6px;
   background-color: rgb(244, 245, 247);
   display: flex;
   flex-direction: column;
   padding: 0.7rem 0.7rem 1rem;
   margin-right: 1.5rem;
+  height: 100%;
 `;
 
 const TasksContainer = styled.div`

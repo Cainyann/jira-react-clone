@@ -26,7 +26,7 @@ const ProjectListScreen = () => {
     data: projectList,
     retry,
   } = useProjects(debounceParam);
-  const { openModal } = useProjectModal();
+  const { openCreateModal } = useProjectModal();
 
   //在搜索信息searchParams变化的时候请求接口fetch usersList
   // useEffect(() => {
@@ -77,7 +77,7 @@ const ProjectListScreen = () => {
       <RowFlexEnd spaceBetween={true} marginBottom={2}>
         <h1>项目列表</h1>
         {/* {props.projectModalButton} */}
-        <ButtonNoPadding type="link" onClick={openModal}>
+        <ButtonNoPadding type="link" onClick={openCreateModal}>
           创建项目
         </ButtonNoPadding>
       </RowFlexEnd>

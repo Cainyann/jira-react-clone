@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import ProjectListScreen from "screens/project-list-screen";
 import { useAuth } from "../context/auth-context";
 import { Route, Routes, Link } from "react-router-dom";
@@ -8,10 +8,10 @@ import { RowFlexEnd } from "../components/style";
 import { ReactComponent as SoftwareLogo } from "../assets/software-logo.svg";
 import OneProjectScreen from "screens/one-project-screen";
 import OneProjectKanbanScreen from "screens/one-project-kanban-screen";
-import OneProjectTasksScreen from "screens/one-project-tasks-screen";
 import ProjectModal from "components/project-modal";
 import ProjectPopover from "components/project-popover";
-import { ButtonNoPadding } from "components/lib";
+import OneProjectEpicScreen from "screens/one-project-epic-screen";
+import UserPopover from "components/user-poppver";
 
 const AuthenticatedApp = () => {
   // const [projectModalOpen, setProjectModalOpen] = useState(false)
@@ -30,7 +30,8 @@ const AuthenticatedApp = () => {
           <Route path="/projects" element={<ProjectListScreen />} />
           <Route path="/projects/:projectId/*" element={<OneProjectScreen />}>
             <Route path="kanban" element={<OneProjectKanbanScreen />} />
-            <Route path="tasks" element={<OneProjectTasksScreen />} />
+            <Route path="" element={<OneProjectKanbanScreen />} />
+            <Route path="epic" element={<OneProjectEpicScreen />} />
           </Route>
         </Routes>
       </Main>
@@ -48,7 +49,7 @@ const PageHeader = () => {
           <SoftwareLogo width={"10rem"} color={"rgb(38, 132, 255)"} />
         </Link>
         <ProjectPopover />
-        <span>用户</span>
+        <UserPopover />
       </HeaderLeft>
       <HeaderRight>
         <User />

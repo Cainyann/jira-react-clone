@@ -1,4 +1,3 @@
-import React from "react";
 import { useProject } from "utils/project";
 import { useSetUrlSearchParam, useUrlQueryParam } from "utils/url";
 
@@ -21,12 +20,12 @@ export const useProjectModal = () => {
   } = useProject(editingProjectId);
 
   const setSearchParams = useSetUrlSearchParam();
-  const openModal = () => setProjectCreate({ projectCreate: true });
+  const openCreateModal = () => setProjectCreate({ projectCreate: true });
   // const closeModal = () => setProjectCreate({ projectCreate: "" });
   //关闭的时候不写false更美观
   const closeModal = () =>
     setSearchParams({ projectCreate: "", editingProjectId: "" });
-  const startEdit = (id: number) =>
+  const openEditModal = (id: number) =>
     setEditingProjectId({ editingProjectId: id });
 
   return {
@@ -34,9 +33,9 @@ export const useProjectModal = () => {
     //modalOpen需要二次包装以供其他组件使用
     modalOpen:
       projectCreate === "true" || Boolean(editingProjectId) ? true : false,
-    openModal,
+    openCreateModal,
     closeModal,
-    startEdit,
+    openEditModal,
     editingProjectId,
     editingProjectData,
     modalLaoding,

@@ -30,3 +30,11 @@ export const RowFlexEnd = styled.div<{
 export const ButtonNoPadding = styled(Button)`
   padding: 0;
 `;
+
+//screen
+export const ScreenContainer = styled.div`
+  padding: 2.2rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;

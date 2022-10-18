@@ -1,12 +1,13 @@
 import styled from "@emotion/styled";
 import KanbanColumn from "components/kanban-column";
-import { RowFlexEnd } from "components/lib";
+import { ScreenContainer } from "components/lib";
 import React from "react";
-import { useParams } from "react-router-dom";
 import { useDocumentTitle } from "utils";
 import { useKanbans } from "utils/kanban";
+import CreateKanban from "./create-kanban";
 import KanbanSearchPanel from "./kanban-search-panel";
-import { useCurrentProject, useProjectIdInUrl } from "./kanban-utils";
+import { useCurrentProject } from "./kanban-utils";
+import TaskEditModal from "./task-edit-modal";
 
 const OneProjectKanbanScreen = () => {
   useDocumentTitle("看板列表");
@@ -16,19 +17,19 @@ const OneProjectKanbanScreen = () => {
   const currentProject = useCurrentProject();
 
   return (
-    <div>
+    <ScreenContainer>
       <h1>{currentProject?.name} 看板</h1>
-      <RowFlexEnd marginBottom={2} gap={1}>
-        <KanbanSearchPanel />
-      </RowFlexEnd>
+      <KanbanSearchPanel />
       <ColumnsContainer>
         {kanbans?.map((kanban) => (
           <div>
             <KanbanColumn kanban={kanban} key={kanban.id} />
           </div>
         ))}
+        <CreateKanban />
       </ColumnsContainer>
-    </div>
+      <TaskEditModal />
+    </ScreenContainer>
   );
 };
 export default OneProjectKanbanScreen;
@@ -37,4 +38,5 @@ export const ColumnsContainer = styled("div")`
   display: flex;
   overflow-x: scroll;
   flex: 1;
+  margin-top: 1.5rem;
 `;

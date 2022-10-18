@@ -1,5 +1,4 @@
-import { Button, Input } from "antd";
-import { RowFlexEnd } from "components/lib";
+import { Button, Col, Input, Row } from "antd";
 import { TaskTypeSelect } from "components/task-type-select";
 import { UserSelect } from "components/user-select";
 import React from "react";
@@ -18,25 +17,34 @@ const KanbanSearchPanel = () => {
   };
 
   return (
-    <RowFlexEnd>
-      <Input
-        style={{ width: "20rem" }}
-        placeholder={"任务名"}
-        value={name}
-        onChange={(evt) => setSearchParams({ name: evt.target.value })}
-      />
-      <UserSelect
-        defaultOptionName="经办人"
-        value={processorId}
-        onChange={(value) => setSearchParams({ processorId: value })}
-      />
-      <TaskTypeSelect
-        defaultOptionName="任务类型"
-        value={typeId}
-        onChange={(value) => setSearchParams({ typeId: value })}
-      />
-      <Button onClick={resetParams}>清除筛选器</Button>
-    </RowFlexEnd>
+    <Row gutter={32} justify="start">
+      <Col>
+        <Input
+          style={{ width: "15rem" }}
+          placeholder={"任务名"}
+          value={name}
+          onChange={(evt) => setSearchParams({ name: evt.target.value })}
+        />
+      </Col>
+      <Col>
+        <UserSelect
+          defaultOptionName="经办人"
+          value={processorId}
+          onChange={(value) => setSearchParams({ processorId: value })}
+        />
+      </Col>
+
+      <Col>
+        <TaskTypeSelect
+          defaultOptionName="任务类型"
+          value={typeId}
+          onChange={(value) => setSearchParams({ typeId: value })}
+        />
+      </Col>
+      <Col>
+        <Button onClick={resetParams}>清除筛选器</Button>
+      </Col>
+    </Row>
   );
 };
 

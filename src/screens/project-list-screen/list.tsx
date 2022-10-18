@@ -143,10 +143,10 @@ const More = ({ project }: { project: Project }) => {
 
   //打开编辑modal 显示title为编辑项目 把当前点击项目id传到url中
   const { editMutate } = useEditProject();
-  const { startEdit } = useProjectModal();
+  const { openEditModal } = useProjectModal();
   const editProject = () => {
     editMutate({ id });
-    startEdit(id);
+    openEditModal(id);
   };
 
   return (

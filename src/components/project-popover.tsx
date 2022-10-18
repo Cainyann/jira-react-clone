@@ -6,7 +6,7 @@ import { useProjectModal } from "screens/project-list-screen/project-modal-util"
 import { ButtonNoPadding } from "./lib";
 
 const ProjectPopover = () => {
-  const { openModal } = useProjectModal();
+  const { openCreateModal } = useProjectModal();
   const { data: projects, retry } = useProjects();
   const pinedProjects = projects?.filter((project) => project.pin);
 
@@ -22,7 +22,7 @@ const ProjectPopover = () => {
       </List>
       <Divider />
       {/* {props.projectModalButton} */}
-      <ButtonNoPadding type="link" onClick={openModal}>
+      <ButtonNoPadding type="link" onClick={openCreateModal}>
         创建项目
       </ButtonNoPadding>
     </ContentContainer>
