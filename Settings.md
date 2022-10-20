@@ -292,3 +292,15 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 ```
 yarn add react-router@latest react-router-dom@latest history@latest
 ```
+
+## 部署
+
+yarn add gh-pages -D
+package.json 添加
+
+```
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build -r git@github.com:Cainyann/Cainyann.github.io.git -b main""
+```
+
+npm run deploy

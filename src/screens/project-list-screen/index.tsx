@@ -2,7 +2,7 @@ import React from "react";
 import List from "./list";
 import SearchPanel from "./search-panel";
 import { useDebounce, useDocumentTitle } from "../../utils/index";
-import { useUrlQueryParam } from "../../utils/url";
+import { useSetUrlSearchParam, useUrlQueryParam } from "../../utils/url";
 import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { useProjects } from "utils/project";
@@ -13,6 +13,7 @@ import { useProjectModal } from "./project-modal-util";
 const ProjectListScreen = () => {
   useDocumentTitle("项目列表", false);
   const [searchParam, setSearchParam] = useUrlQueryParam(["name", "personId"]);
+  const setUrlSearchParam = useSetUrlSearchParam();
   const debounceParam = useDebounce(searchParam, 300);
   // const [isLoading, setIsLoading] = useState(false);
   // const [err, setErr] = useState<Error | null>(null);
@@ -84,7 +85,8 @@ const ProjectListScreen = () => {
 
       <SearchPanel
         searchParam={searchParam}
-        setSearchParam={setSearchParam}
+        // setSearchParam={setSearchParam}
+        setSearchParam={setUrlSearchParam}
         users={users || []}
       />
 

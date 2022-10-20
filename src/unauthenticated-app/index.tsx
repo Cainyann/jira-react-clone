@@ -45,8 +45,8 @@ const Container = styled.div`
   min-height: 100vh;
 `;
 const ShadowCard = styled(Card)`
-  width: 40rem;
-  min-height: 56rem;
+  width: 30rem;
+  min-height: 40rem;
   padding: 3.2rem 4rem;
   border-radius: 0.3rem;
   box-sizing: border-box;
